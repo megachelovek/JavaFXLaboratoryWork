@@ -30,13 +30,12 @@ public  class Controller {
     public void initialize() {
         initData();
 
-        // устанавливаем тип и значение которое должно хранится в колонке
         step.setCellValueFactory(new PropertyValueFactory<ResultPlotXY, Integer>("step"));
         x.setCellValueFactory(new PropertyValueFactory<ResultPlotXY, Double>("x"));
         y.setCellValueFactory(new PropertyValueFactory<ResultPlotXY, Double>("y"));
 
-        // заполняем таблицу данными
         tableResults.setItems(plotData);
+        tableResults.setEditable(true);
     }
 
     private static void initData() {

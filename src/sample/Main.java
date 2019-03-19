@@ -35,18 +35,18 @@ public class Main extends Application {
         Pane rootPane = new Pane();
         primaryStage.setTitle("MVC lab");
 
-        NumberAxis x = new NumberAxis();
-        NumberAxis y = new NumberAxis();
+        NumberAxis x = new NumberAxis(-1,20,0.2);
+        NumberAxis y = new NumberAxis(-2.8,2.8,0.2);
 
         AreaChart<Number, Number> numberLineChart = new AreaChart<Number, Number>(x,y);
         numberLineChart.setTitle("График");
         XYChart.Series series1 = new XYChart.Series();
-        series1.setName("Log");
+        series1.setName("log(x) * sin(x)");
 
         ObservableList<XYChart.Data> datas = FXCollections.observableArrayList();
         List<ResultPlotXY> data= getFirstData();
         for(int i=0; i<data.size(); i++){
-            datas.add(new XYChart.Data(Math.round(data.get(i).getX()),Math.round(data.get(i).getY())));
+            datas.add(new XYChart.Data(RoundDouble(data.get(i).getX(),3),RoundDouble(data.get(i).getY(),3)));
         }
 
         series1.setData(datas);
@@ -59,7 +59,7 @@ public class Main extends Application {
         vbox.getChildren().addAll(label, tableValues);
 
         Pane paneChart = new Pane(numberLineChart);
-        paneChart.setLayoutX(160);
+        paneChart.setLayoutX(180);
         rootPane.getChildren().addAll(root,paneChart);
 
         Scene scene = new Scene(rootPane, 700,400);
@@ -67,6 +67,15 @@ public class Main extends Application {
         primaryStage.setScene(scene);
 
         primaryStage.show();
+    }
+
+    private static double RoundDouble(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
     }
 
     public static void main(String[] args) {

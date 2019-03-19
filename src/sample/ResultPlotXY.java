@@ -2,6 +2,11 @@ package sample;
 
 import javafx.fxml.FXML;
 
+import static java.lang.Math.abs;
+import static java.lang.Math.log;
+import static java.lang.StrictMath.cos;
+import static java.lang.StrictMath.sin;
+
 public class ResultPlotXY {
     private int step; // ненужная переменная
 
@@ -14,7 +19,7 @@ public class ResultPlotXY {
 
     ResultPlotXY(int step,double x){
         this.x = x;
-        this.y = Math.log(x);
+        this.y = log(x) * sin(x);
         this.step = step;
     }
 
