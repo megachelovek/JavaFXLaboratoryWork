@@ -14,6 +14,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -25,7 +26,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        StackPane rootPane = new StackPane();
+        Pane rootPane = new Pane();
 
         primaryStage.setTitle("MVC lab");
 
@@ -60,17 +61,14 @@ public class Main extends Application {
         vbox.setSpacing(5);
         final Label label = new Label("Values");
         label.setFont(new Font("Arial", 20));
-
-
         vbox.getChildren().addAll(label, tableValues);
+
         Pane paneChart = new Pane(numberLineChart);
-        paneChart.setMaxWidth(600);
-        paneChart.setLayoutX(0);
+        paneChart.setLayoutX(220);
         Pane paneTableValues = new Pane(tableValues);
-        paneTableValues.setMaxWidth(300);
-        paneTableValues.setLayoutX(700);
         rootPane.getChildren().addAll(paneTableValues,paneChart);
-        Scene scene = new Scene(rootPane, 1200,600);
+
+        Scene scene = new Scene(rootPane, 700,600);
         numberLineChart.getData().add(series1);
         numberLineChart.getData().add(series2);
         primaryStage.setScene(scene);
