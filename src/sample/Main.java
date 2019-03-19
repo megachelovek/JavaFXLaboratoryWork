@@ -11,17 +11,23 @@ import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    private TableView table = new TableView();
+    private TableView tableValues = new TableView();
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("JavaFX Chart (Series)");
+        StackPane rootPane = new StackPane();
+
+        primaryStage.setTitle("MVC lab");
 
         NumberAxis x = new NumberAxis();
         NumberAxis y = new NumberAxis();
@@ -42,21 +48,29 @@ public class Main extends Application {
         series1.setData(datas);
         series2.setData(datas2);
 
-        table.setEditable(true);
+        tableValues.setEditable(true);
 
-        TableColumn firstNameCol = new TableColumn("First Name");
-        TableColumn lastNameCol = new TableColumn("Last Name");
-        TableColumn emailCol = new TableColumn("Email");
+        TableColumn xCol = new TableColumn("X");
+        TableColumn yCol = new TableColumn("Y");
 
-        table.getColumns().addAll(firstNameCol, lastNameCol, emailCol);
+        tableValues.getColumns().addAll(xCol, yCol);
 
+        /// Таблица
         final VBox vbox = new VBox();
         vbox.setSpacing(5);
-        vbox.setPadding(new Insets(10, 0, 0, 10));
-        vbox.getChildren().addAll(label, table);
-        Scene tableScene = new Scene(tableValues, 160,600);
+        final Label label = new Label("Values");
+        label.setFont(new Font("Arial", 20));
 
-        Scene scene = new Scene(numberLineChart, 600,600);
+
+        vbox.getChildren().addAll(label, tableValues);
+        Pane paneChart = new Pane(numberLineChart);
+        paneChart.setMaxWidth(600);
+        paneChart.setLayoutX(0);
+        Pane paneTableValues = new Pane(tableValues);
+        paneTableValues.setMaxWidth(300);
+        paneTableValues.setLayoutX(700);
+        rootPane.getChildren().addAll(paneTableValues,paneChart);
+        Scene scene = new Scene(rootPane, 1200,600);
         numberLineChart.getData().add(series1);
         numberLineChart.getData().add(series2);
         primaryStage.setScene(scene);
