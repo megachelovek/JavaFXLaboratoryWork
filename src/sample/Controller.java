@@ -36,6 +36,7 @@ public  class Controller {
 
         tableResults.setItems(plotData);
         tableResults.setEditable(true);
+
     }
 
     private static void initData() {

@@ -1,6 +1,8 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,9 +14,7 @@ import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -29,6 +29,8 @@ import static sample.Controller.getFirstData;
 public class Main extends Application {
     @FXML private TableView<ResultPlotXY> tableValues = new TableView<ResultPlotXY>();
     Controller control =new Controller();
+    TextArea textArea = new TextArea();
+    Button btn = new Button("Edit X");
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
@@ -41,7 +43,7 @@ public class Main extends Application {
         AreaChart<Number, Number> numberLineChart = new AreaChart<Number, Number>(x,y);
         numberLineChart.setTitle("График");
         XYChart.Series series1 = new XYChart.Series();
-        series1.setName("log(x) * sin(x)");
+        series1.setName("log(x)*sin(x)");
 
         ObservableList<XYChart.Data> datas = FXCollections.observableArrayList();
         List<ResultPlotXY> data= getFirstData();
@@ -51,16 +53,26 @@ public class Main extends Application {
 
         series1.setData(datas);
 
-        /// Таблица
-        final VBox vbox = new VBox();
-        vbox.setSpacing(5);
-        final Label label = new Label("Значения");
-        label.setFont(new Font("Arial", 20));
-        vbox.getChildren().addAll(label, tableValues);
-
         Pane paneChart = new Pane(numberLineChart);
         paneChart.setLayoutX(180);
-        rootPane.getChildren().addAll(root,paneChart);
+        textArea.setLayoutX(190);
+        textArea.setLayoutY(360);
+        textArea.setMaxWidth(60);
+        textArea.setMaxHeight(5);
+        textArea.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("^\\d+(\\.\\d+)*$")) {
+                    textArea.setText(newValue.replaceAll("[^0-9.]", ""));
+                }
+            }
+        });
+        btn.setLayoutX(260);
+        btn.setLayoutY(360);
+        btn.setMaxWidth(50);
+        //btn.setOnAction();
+        rootPane.getChildren().addAll(root,paneChart,textArea,btn);
 
         Scene scene = new Scene(rootPane, 700,400);
         numberLineChart.getData().add(series1);
