@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -35,7 +36,7 @@ public  class Controller {
         y.setCellValueFactory(new PropertyValueFactory<ResultPlotXY, Double>("y"));
 
         tableResults.setItems(plotData);
-        tableResults.setEditable(true);
+
 
     }
 
@@ -58,6 +59,20 @@ public  class Controller {
 
     public TableView GetTable(){
         return tableResults;
+    }
+
+    public void EditChartAndTable(double newValue){
+        ObservableList<ResultPlotXY> plotData2 = plotData;
+        TablePosition cell = tableResults.getFocusModel().getFocusedCell();
+        tableResults.edit(cell.getRow(), cell.getTableColumn());
+        x.setOnEditCommit((TableColumn.CellEditEvent<ResultPlotXY, Double> event) -> {
+            TablePosition<ResultPlotXY, Double> pos = event.getTablePosition();
+
+            int row = pos.getRow();
+            ResultPlotXY value = event.getTableView().getItems().get(row);
+
+            value.setX(newValue);
+        });
     }
 
 }

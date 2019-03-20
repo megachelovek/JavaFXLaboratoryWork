@@ -27,6 +27,7 @@ public class ResultPlotXY {
 
     public void setX(double x){
         this.x = x;
+        this.y = log(x) * sin(x);
     }
 
     public void setY(double y){

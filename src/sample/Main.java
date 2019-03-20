@@ -27,13 +27,13 @@ import java.util.List;
 import static sample.Controller.getFirstData;
 
 public class Main extends Application {
-    @FXML private TableView<ResultPlotXY> tableValues = new TableView<ResultPlotXY>();
     Controller control =new Controller();
     TextArea textArea = new TextArea();
     Button btn = new Button("Edit X");
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        //TableView<ResultPlotXY> tableValues = root.table new TableView<ResultPlotXY>();
         Pane rootPane = new Pane();
         primaryStage.setTitle("MVC lab");
 
@@ -71,7 +71,7 @@ public class Main extends Application {
         btn.setLayoutX(260);
         btn.setLayoutY(360);
         btn.setMaxWidth(50);
-        //btn.setOnAction();
+        btn.setOnAction(event -> control.EditChartAndTable(Double.parseDouble(textArea.getText())));
         rootPane.getChildren().addAll(root,paneChart,textArea,btn);
 
         Scene scene = new Scene(rootPane, 700,400);
