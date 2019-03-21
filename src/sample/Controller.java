@@ -14,7 +14,8 @@ import java.util.List;
 public  class Controller {
 
     private static ObservableList<ResultPlotXY> plotData = FXCollections.observableArrayList();
-
+    private static int selectedRow;
+    private static TableView<ResultPlotXY> tableEditResults;
     @FXML
     private TableView<ResultPlotXY> tableResults;
 
@@ -36,8 +37,12 @@ public  class Controller {
         y.setCellValueFactory(new PropertyValueFactory<ResultPlotXY, Double>("y"));
 
         tableResults.setItems(plotData);
-
-
+        tableEditResults = tableResults;
+        tableResults.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                 selectedRow = tableResults.getSelectionModel().getSelectedItem().getStep();
+            }
+        });
     }
 
     private static void initData() {
@@ -57,22 +62,10 @@ public  class Controller {
         return plots;
     }
 
-    public TableView GetTable(){
-        return tableResults;
-    }
-
-    public void EditChartAndTable(double newValue){
-        ObservableList<ResultPlotXY> plotData2 = plotData;
-        TablePosition cell = tableResults.getFocusModel().getFocusedCell();
-        tableResults.edit(cell.getRow(), cell.getTableColumn());
-        x.setOnEditCommit((TableColumn.CellEditEvent<ResultPlotXY, Double> event) -> {
-            TablePosition<ResultPlotXY, Double> pos = event.getTablePosition();
-
-            int row = pos.getRow();
-            ResultPlotXY value = event.getTableView().getItems().get(row);
-
-            value.setX(newValue);
-        });
+    public int EditChartAndTable(double newValue){
+        ResultPlotXY item = new ResultPlotXY(selectedRow,newValue);
+        tableEditResults.getItems().set(selectedRow,item);
+        return selectedRow;
     }
 
 }

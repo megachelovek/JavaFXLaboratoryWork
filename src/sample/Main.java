@@ -5,21 +5,15 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.List;
@@ -71,7 +65,11 @@ public class Main extends Application {
         btn.setLayoutX(260);
         btn.setLayoutY(360);
         btn.setMaxWidth(50);
-        btn.setOnAction(event -> control.EditChartAndTable(Double.parseDouble(textArea.getText())));
+        btn.setOnAction(event -> {
+            int row =control.EditChartAndTable(Double.parseDouble(textArea.getText()));
+                datas.set(row,new XYChart.Data(Double.parseDouble(textArea.getText()),new ResultPlotXY(row,Double.parseDouble(textArea.getText())).getY()));
+            
+        });
         rootPane.getChildren().addAll(root,paneChart,textArea,btn);
 
         Scene scene = new Scene(rootPane, 700,400);
